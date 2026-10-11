@@ -35,8 +35,8 @@ The ecosystem explicitly differentiates between elder in-home hardware (no scree
    - Switchable between **State A (Normal Safe Status)** and **State B (Night Critical Emergency)**.
    - Incident timeline tracker and simulated international audio dialer.
 3. **Tab 3: Arjun's Bedside Mobile Phone App (Neighbour • 2 min walk)**:
-   - High-contrast bedside mobile container with piercing wake-up alarm siren.
-   - Two massive touch targets for groggy interaction in the dark (*"I AM ON MY WAY"* & *"Cannot Respond"*).
+   - Light-themed, high-contrast bedside mobile container with piercing wake-up alarm siren.
+   - **Tactile Slider Buttons (Accidental Touch Protection)**: Replaced tap buttons with interactive swipe/drag sliders (*"Slide: I am going over now"* and *"Slide: Cannot respond"*) requiring deliberate motor intent from groggy elderly responders.
    - Veranda gate keycode display (`PIN: 8492`) and built-in screen torch.
 4. **Tab 4: Dr. Ishan Fernando's Mobile Clinical App (Kandy Health Centre)**:
    - Clinical triage mobile container reviewing weekly trends:
@@ -63,10 +63,10 @@ A prominent top toggle switch allows judges and evaluators to simulate the **2:0
   - Subtext: `Amma had a slip at 2:00 AM SLST. She asked not to be disturbed, but due to 4 minutes of immobility, Arjun has been dispatched. You will receive an update shortly.`
   - Design Note: Demonstrates agent's promise retention via timezone offset.
 - **Tab 3 (Arjun's App - First Responder)**:
-  - Forced high-contrast Red/Black dark mode for waking in the dark.
+  - Clean light-themed container with high-contrast alert cards.
   - Headline: `EMERGENCY OVERRIDE: Check on Malani.`
   - Alert Text: `Malani verbally refused help but has been immobile on the bathroom floor for >4 minutes. Please go over immediately.`
-  - Bright green highlighted button: `I AM GOING OVER NOW`.
+  - Interactive Bright Green Slider: `Slide: I am going over now` (swipe to confirm, preventing accidental taps).
 - **Tab 4 (Doctor's View - Trust Repair Log)**:
   - Prominent highlighted card at 8:00 AM:
     - *Trust Repair Log (8:00 AM)*: "Agent explained the override to Malani: 'Amma, I kept my promise and did not sound alarms for Dilrukshi last night. However, my core rule is that if you are on the floor for over 4 minutes, I must get local help for your safety.'"
