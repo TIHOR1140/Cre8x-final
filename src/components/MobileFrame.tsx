@@ -65,3 +65,4 @@ export const MobileFrame: React.FC<MobileFrameProps> = ({
     </div>
   );
 };
+

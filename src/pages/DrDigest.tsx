@@ -6,16 +6,23 @@ import {
   BellOff, 
   FileDown, 
   Calendar, 
-  Activity, 
   CheckCircle2, 
   Sliders, 
   Printer, 
-  FileText
+  FileText,
+  HeartHandshake,
+  ShieldCheck,
+  Clock,
+  Sparkles
 } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { MobileFrame } from '../components/MobileFrame';
 
-export const DrDigest: React.FC = () => {
+interface DrDigestProps {
+  isNewSituation?: boolean;
+}
+
+export const DrDigest: React.FC<DrDigestProps> = ({ isNewSituation = false }) => {
   const [exportModal, setExportModal] = useState<boolean>(false);
   const [scheduleModal, setScheduleModal] = useState<boolean>(false);
   const [eveningSlot, setEveningSlot] = useState<string>('06:30 PM');
@@ -34,7 +41,7 @@ export const DrDigest: React.FC = () => {
         <div className="flex items-center gap-2">
           <Stethoscope className="w-4 h-4 text-blue-600" />
           <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
-            Dr. Ishan Fernando's Clinical Mobile Portal
+            {isNewSituation ? "Dr. Ishan Fernando: Morning-After Triage" : "Dr. Ishan's Clinical Mobile Portal"}
           </span>
         </div>
         <span className="text-[11px] font-semibold text-slate-500">
@@ -46,12 +53,51 @@ export const DrDigest: React.FC = () => {
       <MobileFrame
         userLabel="Dr. Ishan Fernando, MD"
         locationLabel="Kandy Health Centre • Geriatric Triage"
-        timeLabel="08:45 AM"
+        timeLabel={isNewSituation ? "08:15 AM" : "08:45 AM"}
         carrierLabel="SLT-Mobitel"
       >
         <div className="p-4 flex flex-col justify-between min-h-[640px] space-y-4">
           
           <div className="space-y-3.5">
+            
+            {/* 5. NEW HIGHLIGHTED CARD: TRUST REPAIR LOG (8:00 AM) */}
+            {isNewSituation && (
+              <div className="bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 text-white rounded-2xl p-4 border-2 border-indigo-400 shadow-lg animate-scaleUp space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-indigo-500 text-white rounded-lg shadow-xs">
+                      <HeartHandshake className="w-4 h-4" />
+                    </div>
+                    {/* Title */}
+                    <h3 className="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-tight">
+                      Trust Repair Log (8:00 AM)
+                    </h3>
+                  </div>
+                  <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-indigo-800 text-indigo-200 border border-indigo-700">
+                    SLMC Protocol
+                  </span>
+                </div>
+
+                {/* Log Content Requested */}
+                <div className="bg-black/50 p-3 rounded-xl border border-indigo-700/60 text-xs text-slate-200 leading-relaxed font-sans">
+                  <span className="font-bold text-amber-200 block mb-1">
+                    Agent explained the override to Malani:
+                  </span>
+                  <p className="italic text-slate-100 font-serif text-[13px] leading-relaxed">
+                    "Amma, I kept my promise and did not sound alarms for Dilrukshi last night. However, my core rule is that if you are on the floor for over 4 minutes, I must get local help for your safety."
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between text-[10px] text-slate-300 pt-1">
+                  <span className="flex items-center gap-1 text-emerald-400 font-semibold">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    Elder Trust Preserved: Zero Resentment
+                  </span>
+                  <span className="font-mono text-slate-400">Dr. Ishan Signed</span>
+                </div>
+              </div>
+            )}
+
             {/* Patient Header Card */}
             <div className="bg-slate-900 text-white p-3.5 rounded-2xl border border-slate-800 shadow-xs">
               <div className="flex items-center justify-between">
@@ -62,7 +108,7 @@ export const DrDigest: React.FC = () => {
                 </div>
                 <div className="text-right">
                   <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                    Stable
+                    {isNewSituation ? "Post-Slip Monitored" : "Stable"}
                   </span>
                   <div className="text-[9px] text-slate-400 mt-1">Review: Oct 11, 2026</div>
                 </div>
@@ -141,10 +187,16 @@ export const DrDigest: React.FC = () => {
               <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 text-[11px] space-y-1">
                 <div className="flex justify-between font-semibold text-slate-800">
                   <span>Bathroom Near-Falls:</span>
-                  <span className="text-rose-600 font-bold">2 Logged (1 AM - 3 AM)</span>
+                  <span className="text-rose-600 font-bold">
+                    {isNewSituation ? "3 Logged (Latest: 02:00 AM)" : "2 Logged (1 AM - 3 AM)"}
+                  </span>
                 </div>
                 <p className="text-[10px] text-slate-500">
-                  Stumbles self-recovered within 20s. <strong>Zero trauma incidents.</strong>
+                  {isNewSituation ? (
+                    "02:00 AM slip: Arjun assisted Malani to bed. Zero fractures confirmed by local pulse check."
+                  ) : (
+                    "Stumbles self-recovered within 20s. Zero trauma incidents."
+                  )}
                 </p>
               </div>
 
@@ -170,7 +222,7 @@ export const DrDigest: React.FC = () => {
                 <div className="text-xl font-black text-emerald-950 font-mono">14 Minor Anomalies</div>
                 <div className="text-[10px] text-emerald-800 font-medium">Contained locally on in-home hub</div>
                 <div className="py-1 px-2 bg-white rounded-lg text-[10px] font-bold text-emerald-700 border border-emerald-300">
-                  0 Unnecessary Family Wake-ups
+                  {isNewSituation ? "0 Disruptive Night Alarms in Melbourne" : "0 Unnecessary Family Wake-ups"}
                 </div>
               </div>
             </div>
@@ -232,11 +284,12 @@ export const DrDigest: React.FC = () => {
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] space-y-1.5 font-mono">
               <div className="font-bold text-slate-800">Malani Ranasinghe (Age 87)</div>
               <div>WEEK: Oct 4 - Oct 11, 2026</div>
+              {isNewSituation && <div className="text-orange-600 font-bold">• 02:00 AM Override: Immobility Resolved</div>}
               <div className="text-slate-600 font-sans border-t border-slate-200 pt-1">
                 • Morning Adherence: 100%<br />
                 • Evening Adherence: 4 missed (shifted to 6:30 PM)<br />
-                • Near-Falls: 2 (zero trauma)<br />
-                • Alert Fatigue Score: 100% (0 false wake-ups)
+                • Near-Falls: 3 (latest checked by Arjun)<br />
+                • Trust Repair Completed: 8:00 AM
               </div>
             </div>
 

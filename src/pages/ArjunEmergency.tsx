@@ -9,20 +9,26 @@ import {
   Clock, 
   ShieldAlert, 
   XCircle, 
-  Flashlight
+  Flashlight,
+  ShieldCheck,
+  CheckCircle2
 } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { MobileFrame } from '../components/MobileFrame';
 
 interface ArjunEmergencyProps {
   onNotifyMelbourne?: () => void;
+  isNewSituation?: boolean;
 }
 
-export const ArjunEmergency: React.FC<ArjunEmergencyProps> = ({ onNotifyMelbourne }) => {
+export const ArjunEmergency: React.FC<ArjunEmergencyProps> = ({ 
+  onNotifyMelbourne,
+  isNewSituation = false
+}) => {
   const [alarmActive, setAlarmActive] = useState<boolean>(true);
   const [responderStatus, setResponderStatus] = useState<'idle' | 'en_route' | 'declined'>('idle');
   const [flashlightOn, setFlashlightOn] = useState<boolean>(false);
-  const [secondsElapsed, setSecondsElapsed] = useState<number>(32);
+  const [secondsElapsed, setSecondsElapsed] = useState<number>(isNewSituation ? 245 : 32);
 
   useEffect(() => {
     sound.startEmergencyAlarm();
@@ -36,7 +42,7 @@ export const ArjunEmergency: React.FC<ArjunEmergencyProps> = ({ onNotifyMelbourn
       sound.stopAlarm();
       clearInterval(timer);
     };
-  }, []);
+  }, [isNewSituation]);
 
   const handleMuteAlarm = () => {
     sound.stopAlarm();
@@ -72,7 +78,7 @@ export const ArjunEmergency: React.FC<ArjunEmergencyProps> = ({ onNotifyMelbourn
         <div className="flex items-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping" />
           <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
-            Arjun's Bedside Smartphone Alert
+            {isNewSituation ? "Arjun's Phone: Emergency Override Dispatch" : "Arjun's Bedside Smartphone Alert"}
           </span>
         </div>
 
@@ -98,11 +104,11 @@ export const ArjunEmergency: React.FC<ArjunEmergencyProps> = ({ onNotifyMelbourn
         </button>
       </div>
 
-      {/* MOBILE PHONE MOCKUP CONTAINER */}
+      {/* MOBILE PHONE MOCKUP CONTAINER - FORCED HIGH CONTRAST RED/BLACK DARK MODE */}
       <MobileFrame
         userLabel="Arjun (Neighbour • Age 74)"
-        locationLabel="Peradeniya (Next Door • 2 min walk)"
-        timeLabel="02:20 AM"
+        locationLabel="Next Door • 2 min walk"
+        timeLabel={isNewSituation ? "02:18 AM" : "02:20 AM"}
         carrierLabel="Dialog 4G"
         darkFrame={true}
       >
@@ -111,57 +117,65 @@ export const ArjunEmergency: React.FC<ArjunEmergencyProps> = ({ onNotifyMelbourn
         }`}>
           
           <div className="space-y-4">
-            {/* Priority Status Badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50 text-[11px] font-bold">
-              <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-              Priority Proximity Alert — Next Door (2 min)
+            
+            {/* Status Badge */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/50 text-[11px] font-black tracking-wide">
+              <AlertTriangle className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
+              {isNewSituation ? "CRITICAL PROXIMITY DISPATCH (2 MIN)" : "Priority Proximity Alert — Next Door"}
             </div>
 
-            {/* Main Urgent Notice */}
+            {/* 4. HEADLINE: EMERGENCY OVERRIDE */}
             <div>
-              <h1 className="text-2xl font-black tracking-tight uppercase leading-tight">
-                Malani Amma Needs Assistance.
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight uppercase leading-tight text-white">
+                {isNewSituation ? "EMERGENCY OVERRIDE: Check on Malani." : "Malani Amma Needs Assistance."}
               </h1>
               <p className="text-amber-400 text-xs font-medium mt-1">
                 No. 42, Rajapihilla Mawatha (Opposite Bodhi Tree)
               </p>
             </div>
 
-            {/* Verification & Consent Record */}
-            <div className={`p-3 rounded-2xl border text-xs space-y-1.5 ${
-              flashlightOn ? 'bg-amber-50 border-amber-300 text-slate-800' : 'bg-zinc-900 border-zinc-700/80 text-zinc-300'
+            {/* 4. ALERT TEXT */}
+            <div className={`p-3.5 rounded-2xl border text-xs space-y-2 ${
+              flashlightOn ? 'bg-amber-50 border-amber-300 text-slate-800' : 'bg-zinc-900 border-rose-500/60 text-zinc-200'
             }`}>
-              <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-amber-400">
+              <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-rose-400">
                 <ShieldAlert className="w-3.5 h-3.5" />
-                Consent & Sensor Verification Record
+                Safety Override Protocol Triggered
               </div>
-              <p className="text-[11px] leading-relaxed">
-                Sensor confirmed <strong>prolonged immobility in bathroom (&gt; 3 mins)</strong>. Voice check in Sinhala received no reply. <strong>Malani pre-approved your dispatch</strong> for unconfirmed silence.
+              
+              {/* Alert text requested */}
+              <p className="text-xs sm:text-sm font-semibold leading-relaxed text-white">
+                {isNewSituation ? (
+                  "Malani verbally refused help but has been immobile on the bathroom floor for >4 minutes. Please go over immediately."
+                ) : (
+                  "Sensor confirmed prolonged immobility in bathroom (>3 mins). Voice check in Sinhala received no reply. Malani pre-approved your dispatch."
+                )}
               </p>
-              <div className="pt-1 text-[10px] text-zinc-400 font-mono flex items-center justify-between">
-                <span>Elapsed: {secondsElapsed}s</span>
-                <span className="text-emerald-400 font-semibold">Radar Only (Zero Cameras)</span>
+
+              <div className="pt-1.5 text-[10px] text-zinc-400 font-mono flex items-center justify-between border-t border-zinc-800">
+                <span>Immobility: {isNewSituation ? "4m 12s on floor" : `${secondsElapsed}s elapsed`}</span>
+                <span className="text-emerald-400 font-semibold">Melbourne Not Alarmed</span>
               </div>
             </div>
 
             {/* IDLE STATE: TWO MASSIVE TOUCH TARGETS */}
             {responderStatus === 'idle' && (
-              <div className="space-y-2.5 pt-1">
+              <div className="space-y-3 pt-1">
                 <div className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold text-center">
-                  Large Targets for Groggy Awakening:
+                  Designed for Waking from Heavy Sleep:
                 </div>
 
-                {/* Button 1: Massive Green */}
+                {/* 4. BUTTONS: Highlight "I am going over now" in BRIGHT GREEN */}
                 <button
                   onClick={handleAccept}
-                  className="w-full py-4 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-black text-base shadow-lg shadow-emerald-950/80 flex flex-col items-center justify-center gap-0.5 border-2 border-emerald-400 transition-all cursor-pointer"
+                  className="w-full py-5 px-4 rounded-2xl bg-emerald-500 hover:bg-emerald-450 active:scale-[0.98] text-white font-black text-base sm:text-lg shadow-xl shadow-emerald-950/90 ring-4 ring-emerald-400/50 flex flex-col items-center justify-center gap-0.5 border-2 border-emerald-300 transition-all cursor-pointer animate-pulse"
                 >
                   <div className="flex items-center gap-2">
-                    <UserCheck className="w-6 h-6" />
-                    <span>I AM ON MY WAY</span>
+                    <UserCheck className="w-6 h-6 text-white" />
+                    <span>I AM GOING OVER NOW</span>
                   </div>
-                  <span className="text-[10px] font-normal text-emerald-100 opacity-90">
-                    (Notifies Dilrukshi in Melbourne)
+                  <span className="text-[10px] font-medium text-emerald-100 opacity-95">
+                    (Silences siren • Sends gentle update to Dilrukshi)
                   </span>
                 </button>
 
@@ -185,12 +199,12 @@ export const ArjunEmergency: React.FC<ArjunEmergencyProps> = ({ onNotifyMelbourn
                       ✓
                     </div>
                     <div>
-                      <h3 className="text-sm font-bold">Status: En Route</h3>
-                      <p className="text-[10px] text-emerald-300">Melbourne daughter notified.</p>
+                      <h3 className="text-sm font-bold">Status: En Route to Malani</h3>
+                      <p className="text-[10px] text-emerald-300">Melbourne morning digest notified.</p>
                     </div>
                   </div>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-900 text-emerald-200 text-[10px] font-mono font-bold">
-                    ETA: 90s
+                    ETA: 60 SECONDS
                   </span>
                 </div>
 
@@ -223,9 +237,9 @@ export const ArjunEmergency: React.FC<ArjunEmergencyProps> = ({ onNotifyMelbourn
                 <div className="flex items-center justify-between pt-1">
                   <button
                     onClick={() => setResponderStatus('idle')}
-                    className="text-[10px] text-zinc-400 hover:text-white underline"
+                    className="text-[10px] text-zinc-400 hover:text-white underline cursor-pointer"
                   >
-                    Reset
+                    Reset Alert
                   </button>
                   <a
                     href="tel:1990"
@@ -241,13 +255,13 @@ export const ArjunEmergency: React.FC<ArjunEmergencyProps> = ({ onNotifyMelbourn
             {/* DECLINED STATE */}
             {responderStatus === 'declined' && (
               <div className="bg-rose-950/80 border-2 border-rose-500 rounded-2xl p-4 text-white space-y-3 animate-scaleUp">
-                <div className="text-sm font-bold text-white">Auto-Escalated to 1990</div>
+                <div className="text-sm font-bold text-white">Auto-Escalated to 1990 Suwa Seriya</div>
                 <p className="text-[10px] text-rose-300">
-                  Suwa Seriya ambulance dispatched. Automated alert call sent to Dilrukshi in Melbourne.
+                  Ambulance dispatched to No. 42 Rajapihilla Mawatha. Automated alert call sent to Melbourne.
                 </p>
                 <button
                   onClick={() => setResponderStatus('idle')}
-                  className="px-3 py-1.5 rounded-xl bg-zinc-800 text-xs font-semibold"
+                  className="px-3 py-1.5 rounded-xl bg-zinc-800 text-xs font-semibold cursor-pointer"
                 >
                   Back to Alert
                 </button>

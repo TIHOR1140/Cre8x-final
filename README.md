@@ -47,6 +47,32 @@ The ecosystem explicitly differentiates between elder in-home hardware (no scree
 
 ---
 
+## ⚡ Global Control: "New Situation: 2:00 AM Fall (7:30 AM Melbourne)" Override Logic
+
+A prominent top toggle switch allows judges and evaluators to simulate the **2:00 AM Fall override protocol**:
+
+- **Tab 1 (Malani's Home Hub)**:
+  - Hub radial glow switches to **pulsing, urgent Amber/Orange**.
+  - **Two-Part Conversation Transcript**:
+    - *Malani (02:14 AM)*: "I'm fine. I just slipped. Don't call anyone, and don't wake the children."
+    - *Agent (02:18 AM - 4 mins later)*: "මලනී අම්මා, ඔබට තවමත් නැගිටින්න අපහසු නිසා මම අර්ජුන්ට එන්න කියනවා. මම දිල්රුක්ෂිට කතා කරන්නේ නැහැ." (*"Malani Amma, since you haven't been able to get up, I am waking Arjun. I am keeping my promise and not waking Dilrukshi."*)
+- **Tab 2 (Dilrukshi's App - Timezone Loophole)**:
+  - Screen shifts to **Warning / Amber state** (no flashing red siren, because she is already awake in daylight and Arjun is handling it locally).
+  - Header shows: `Local Time: 7:30 AM AEST (Morning)`.
+  - Headline: `Slip Detected. Arjun is checking in.`
+  - Subtext: `Amma had a slip at 2:00 AM SLST. She asked not to be disturbed, but due to 4 minutes of immobility, Arjun has been dispatched. You will receive an update shortly.`
+  - Design Note: Demonstrates agent's promise retention via timezone offset.
+- **Tab 3 (Arjun's App - First Responder)**:
+  - Forced high-contrast Red/Black dark mode for waking in the dark.
+  - Headline: `EMERGENCY OVERRIDE: Check on Malani.`
+  - Alert Text: `Malani verbally refused help but has been immobile on the bathroom floor for >4 minutes. Please go over immediately.`
+  - Bright green highlighted button: `I AM GOING OVER NOW`.
+- **Tab 4 (Doctor's View - Trust Repair Log)**:
+  - Prominent highlighted card at 8:00 AM:
+    - *Trust Repair Log (8:00 AM)*: "Agent explained the override to Malani: 'Amma, I kept my promise and did not sound alarms for Dilrukshi last night. However, my core rule is that if you are on the floor for over 4 minutes, I must get local help for your safety.'"
+
+---
+
 ## 🛠️ Tech Stack
 
 - **React 19** with TypeScript
