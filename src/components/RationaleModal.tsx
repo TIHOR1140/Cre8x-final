@@ -33,7 +33,7 @@ export const RationaleModal: React.FC<RationaleModalProps> = ({ isOpen, onClose 
               UX Context & Design Rationale (Evidence-Backed)
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Why each interface in the Mithra ecosystem is intentionally constrained.
+              Why each interface in the සුරක්ෂා ecosystem is intentionally constrained.
             </p>
           </div>
           <button
@@ -57,7 +57,7 @@ export const RationaleModal: React.FC<RationaleModalProps> = ({ isOpen, onClose 
               <strong>Evidence:</strong> Installing live video cameras in the homes of Sri Lankan elders creates profound indignity and shame, especially around bathrooms, dressing, and quiet prayer. Elders often drape cloths over lenses or unplug units.
             </p>
             <div className="bg-white/80 p-3 rounded-xl text-xs text-emerald-900 border border-emerald-200">
-              <strong>Mithra Implementation:</strong> Physical omission of camera sensors. Motion and stillness are detected using 60GHz micro-radar and PIR sensors. Data is processed locally; no visuals exist to hack or view.
+              <strong>සුරක්ෂා Implementation:</strong> Physical omission of camera sensors. Motion and stillness are detected using 60GHz micro-radar and PIR sensors. Data is processed locally; no visuals exist to hack or view.
             </div>
           </div>
 
@@ -71,7 +71,7 @@ export const RationaleModal: React.FC<RationaleModalProps> = ({ isOpen, onClose 
               <strong>Evidence:</strong> Dilrukshi lives in Melbourne (+4.5 to 5.5 hours ahead). Constant push notifications for trivial occurrences (e.g. slight delays in bedtime tea or deferring a pill by an hour) cause chronic cortisol spikes and timezone burnout.
             </p>
             <div className="bg-white/80 p-3 rounded-xl text-xs text-indigo-900 border border-indigo-200">
-              <strong>Mithra Implementation:</strong> Passive state during routine life. Routine misses are contained on-device in Sinhala and batched into Dr. Ishan's Sunday Clinical Digest. Only verified, unanswered emergencies trigger immediate international calls.
+              <strong>සුරක්ෂා Implementation:</strong> Passive state during routine life. Routine misses are contained on-device in Sinhala and batched into Dr. Ishan's Sunday Clinical Digest. Only verified, unanswered emergencies trigger immediate international calls.
             </div>
           </div>
 
@@ -85,7 +85,7 @@ export const RationaleModal: React.FC<RationaleModalProps> = ({ isOpen, onClose 
               <strong>Evidence:</strong> Arjun lives 2 minutes away but sleeps heavily and leaves his phone across the room. Standard small push banners fail to wake elderly neighbours or get dismissed accidentally.
             </p>
             <div className="bg-white/80 p-3 rounded-xl text-xs text-rose-900 border border-rose-200">
-              <strong>Mithra Implementation:</strong> Dedicated high-contrast wake-up display with piercing audio alarm simulation and two massive touch targets. Features explicit consent verification that Malani pre-approved his dispatch, with gate lockbox codes and built-in screen torch.
+              <strong>සුරක්ෂා Implementation:</strong> Dedicated high-contrast wake-up display with piercing audio alarm simulation and two massive touch targets. Features explicit consent verification that Malani pre-approved his dispatch, with gate lockbox codes and built-in screen torch.
             </div>
           </div>
 
@@ -99,7 +99,7 @@ export const RationaleModal: React.FC<RationaleModalProps> = ({ isOpen, onClose 
               <strong>Evidence:</strong> Age-related vision impairment and low English tech literacy make touchscreens a source of anxiety. Traditional pottery or brass lighting fits natural Sri Lankan home aesthetics.
             </p>
             <div className="bg-white/80 p-3 rounded-xl text-xs text-amber-900 border border-amber-200">
-              <strong>Mithra Implementation:</strong> 360-degree ambient radial light glow paired with respectful, colloquial Sinhala ("මලනී අම්මා"). Light acts as non-verbal ambient cueing before any audio speaks.
+              <strong>සුරක්ෂා Implementation:</strong> 360-degree ambient radial light glow paired with respectful, colloquial Sinhala ("මලනී අම්මා"). Light acts as non-verbal ambient cueing before any audio speaks.
             </div>
           </div>
         </div>

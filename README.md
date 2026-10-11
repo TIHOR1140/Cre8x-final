@@ -1,7 +1,7 @@
-# Mithra — Privacy-First AI Care Agent Ecosystem
+# සුරක්ෂා (Suraksha) — Privacy-First AI Care Agent Ecosystem
 ### Set in Peradeniya / Kandy, Sri Lanka ⇄ Melbourne, Australia
 
-Mithra is a multi-view interactive React prototype that translates real geriatric research constraints into an evidence-backed care agent ecosystem for solo-living elders and their remote families.
+සුරක්ෂා is a multi-view interactive React prototype that translates real geriatric research constraints into an evidence-backed care agent ecosystem for solo-living elders and their remote families.
 
 ---
 
@@ -29,7 +29,7 @@ The ecosystem explicitly differentiates between elder in-home hardware (no scree
 1. **Tab 1: In-Home Hardware Simulator (Malani • Peradeniya)**:
    - **Zero touchscreens, zero mobile apps.** Malani interacts solely through physical objects in her home:
    - **Object A (The Home Hub)**: Circular tabletop ambient device with 360° diffuse radial light glow (Amber for reminders, Blue/White for night pathway, Crimson for emergency) and an interactive **Transcript Box** displaying spoken Sinhala (*"මලනී අම්මා, සවස බෙහෙත් පෙත්ත ගන්න අමතක වුණාද?"*) with English translation and audio replay.
-   - **Object B (The Wearable)**: Tactile elder wristband with **exactly ONE massive, tactile 3D button** that says *"I AM OK"*, haptic vibration engine, and zero display screen.
+   - **Object B (The Smart Watch)**: Compact, normal-sized elder smartwatch capturing continuous heart rate (BPM), wrist Sinhala voice command capture, and an *"I'M OK"* tactile safety button.
 2. **Tab 2: Dilrukshi's Mobile Phone App (Melbourne)**:
    - Standard smartphone frame container (`max-w-sm mx-auto border-[8px] border-slate-800 rounded-[2.5rem]`).
    - Switchable between **State A (Normal Safe Status)** and **State B (Night Critical Emergency)**.

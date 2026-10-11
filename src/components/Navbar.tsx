@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { PageId } from '../types';
 import { sound } from '../utils/audio';
+import { SurakshaLogo } from './SurakshaLogo';
 
 interface NavbarProps {
   currentPage: PageId;
@@ -35,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     {
       id: 'malani',
       label: "1. In-Home Hardware",
-      sub: isNewSituation ? 'Home Hub (Urgent Override)' : 'Hub & Wristband (No Screen)',
+      sub: isNewSituation ? 'Hub & Smart Watch (Fall Alert)' : 'Hub & Smart Watch (Vitals & Voice)',
       icon: <Radio className="w-4 h-4" />,
       badge: isNewSituation ? 'Urgent Glow' : 'Hardware'
     },
@@ -68,12 +69,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Top Brand & Actions */}
         <div className="flex items-center justify-between py-2.5 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-2xl bg-gradient-to-tr from-amber-600 via-orange-500 to-amber-400 text-white flex items-center justify-center font-black text-xs shadow-xs">
-              M
-            </div>
+            <SurakshaLogo size="md" />
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-sm sm:text-base tracking-tight text-slate-900">Mithra</span>
+                <span className="font-extrabold text-sm sm:text-base tracking-tight text-slate-900 font-sinhala">සුරක්ෂා</span>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
                   Privacy-First Care Ecosystem
                 </span>

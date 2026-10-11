@@ -84,7 +84,7 @@ export function App() {
       <footer className="bg-white border-t border-slate-200/80 py-6 px-4 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-800">Mithra Ecosystem</span>
+            <span className="font-bold text-slate-800 font-sinhala">සුරක්ෂා Ecosystem</span>
             <span>•</span>
             <span className="flex items-center gap-1 text-slate-600">
               <MapPin className="w-3.5 h-3.5 text-amber-600" />

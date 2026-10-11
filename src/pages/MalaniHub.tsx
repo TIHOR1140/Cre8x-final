@@ -11,7 +11,12 @@ import {
   Zap,
   AlertTriangle,
   Clock,
-  Sparkles
+  Sparkles,
+  Heart,
+  Mic,
+  MicOff,
+  Wifi,
+  Thermometer
 } from 'lucide-react';
 import { AmbientState, AmbientStateConfig } from '../types';
 import { sound } from '../utils/audio';
@@ -81,6 +86,8 @@ export const MalaniHub: React.FC<MalaniHubProps> = ({
   const [wearablePressed, setWearablePressed] = useState<boolean>(false);
   const [wearableFeedback, setWearableFeedback] = useState<string | null>(null);
   const [voiceLogDecision, setVoiceLogDecision] = useState<string | null>(null);
+  const [watchVoiceCommand, setWatchVoiceCommand] = useState<string | null>(null);
+  const [isWatchListening, setIsWatchListening] = useState<boolean>(false);
 
   const current = STATE_CONFIGS[activeState];
 
@@ -93,6 +100,7 @@ export const MalaniHub: React.FC<MalaniHubProps> = ({
     setWearablePressed(false);
     setWearableFeedback(null);
     setVoiceLogDecision(null);
+    setWatchVoiceCommand(null);
     sound.playTap();
 
     if (state === 'tablet') {
@@ -112,13 +120,45 @@ export const MalaniHub: React.FC<MalaniHubProps> = ({
     setWearablePressed(true);
     sound.playTap();
     if (isNewSituation) {
-      setWearableFeedback('⚠️ Override Protected: Stillness exceeds 4-minute safety threshold. While Amma pressed "I AM OK", protocol requires Arjun to physically verify no fractures.');
+      setWearableFeedback('⚠️ Smart Watch Safeguard: Fall impact & 4-min immobility override active. While Amma tapped "I AM OK" at 02:15 AM, vitality radar confirms stillness. Arjun is checking in person to ensure no fractures.');
     } else {
-      setWearableFeedback('✓ Tactile Click Registered: "I am OK" signal sent via low-power BLE mesh to Home Hub. Alarm cancelled locally.');
+      setWearableFeedback('✓ Smart Watch Screen Touch: "I am OK" registered. Biometric pulse synced to Home Hub over BLE mesh. All alerts cleared.');
     }
     setTimeout(() => {
       setWearablePressed(false);
-    }, 2500);
+    }, 2800);
+  };
+
+  const handleWatchVoiceTrigger = (phraseSinhala: string, phraseEnglish: string, actionType: 'taken' | 'fine' | 'later' | 'help') => {
+    setIsWatchListening(true);
+    sound.playTap();
+    setWatchVoiceCommand(`"${phraseSinhala}" (${phraseEnglish})`);
+    
+    setTimeout(() => {
+      setIsWatchListening(false);
+      if (actionType === 'taken') {
+        sound.playSoftChime();
+        setWearableFeedback(`✓ Watch Voice Engine: "${phraseSinhala}" registered on-wrist. Hub confirms evening medication taken.`);
+        setVoiceLogDecision(`✓ Wrist Voice: Spoken "${phraseSinhala}" (Taken) confirmed by watch acoustic sensor.`);
+      } else if (actionType === 'fine') {
+        if (isNewSituation) {
+          setWearableFeedback(`⚠️ Watch Voice: "${phraseSinhala}" (I am fine) captured at wrist. Immobility timer exceeded 4 min — safety override dispatched Arjun.`);
+          setVoiceLogDecision(`⚠️ Spoken "${phraseSinhala}" captured at 02:14 AM. Agent dispatches Arjun safely.`);
+        } else {
+          setWearableFeedback(`✓ Watch Voice: "${phraseSinhala}" (I am fine) registered. Ambient alert cleared.`);
+          setVoiceLogDecision(`✓ Wrist Voice: Spoken "${phraseSinhala}" (I am fine) registered via watch acoustic sensor.`);
+        }
+      } else if (actionType === 'later') {
+        setWearableFeedback(`⏳ Watch Voice: "${phraseSinhala}" (Later) captured. Reminder postponed by 20 min.`);
+        setVoiceLogDecision(`⏳ Snoozed via watch voice command.`);
+      } else if (actionType === 'help') {
+        setWearableFeedback(`🚨 Watch Voice: "${phraseSinhala}" (Help) triggered emergency dispatch!`);
+        setVoiceLogDecision(`🚨 Emergency assistance requested from watch acoustic input!`);
+        if (onTriggerEmergency) {
+          setTimeout(onTriggerEmergency, 1000);
+        }
+      }
+    }, 600);
   };
 
   const handleVerbalResponse = (type: 'taken' | 'ignore' | 'later' | 'help') => {
@@ -158,8 +198,8 @@ export const MalaniHub: React.FC<MalaniHubProps> = ({
                 4-Min Immobility Override Engaged (02:18 AM)
               </span>
             ) : (
-              <span className="text-xs font-bold text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
-                Zero Screens • No Mobile App
+              <span className="text-xs font-bold text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200">
+                Ambient Hub + Biometric Smart Watch
               </span>
             )}
           </div>
@@ -173,7 +213,7 @@ export const MalaniHub: React.FC<MalaniHubProps> = ({
               </span>
             ) : (
               <span>
-                Malani (87) interacts <strong>exclusively with physical objects</strong> in her home. There are no mobile apps, passwords, or glass screens for her to navigate.
+                Malani (87) interacts <strong>exclusively with physical home devices</strong>: her tabletop Home Hub and dedicated <strong>සුරක්ෂා Smart Watch</strong>. The watch tracks continuous heart rate, vitals, and recognizes her spoken Sinhala commands without requiring mobile apps or complex smartphone menus.
               </span>
             )}
           </p>
@@ -284,7 +324,7 @@ export const MalaniHub: React.FC<MalaniHubProps> = ({
                     >
                       <div className="flex flex-col items-center justify-center text-center">
                         <Radio className="w-5 h-5 text-slate-300 mb-1" />
-                        <span className="text-[10px] font-black tracking-widest uppercase text-slate-200">MITHRA</span>
+                        <span className="text-[11px] font-black tracking-widest text-slate-200 font-sinhala">සුරක්ෂා</span>
                         <span className="text-[9px] text-slate-400">Hub • Kandy</span>
                         <div className="mt-1 flex items-center gap-1">
                           <span className={`w-1.5 h-1.5 rounded-full ${isNewSituation ? 'bg-orange-500 animate-ping' : 'bg-emerald-400'}`} />
@@ -340,7 +380,7 @@ export const MalaniHub: React.FC<MalaniHubProps> = ({
                   {/* Part 2: Agent at 02:18 AM (4 mins later) */}
                   <div className="bg-black/70 rounded-xl p-3 border-l-4 border-orange-500 space-y-1.5">
                     <div className="flex items-center justify-between text-[11px] text-orange-400 font-bold">
-                      <span>Mithra Agent (02:18 AM - 4 mins later):</span>
+                      <span className="font-sinhala font-bold">සුරක්ෂා Agent (02:18 AM - 4 mins later):</span>
                       <span className="text-[10px] text-orange-300 font-mono">Rule Override</span>
                     </div>
                     {/* Large Sinhala script */}
@@ -449,117 +489,170 @@ export const MalaniHub: React.FC<MalaniHubProps> = ({
         </div>
 
         {/* ============================================================ */}
-        {/* OBJECT B: THE WEARABLE (Elder Wristband with ONE 3D Button) */}
+        {/* OBJECT B: THE SMART WATCH (Normal Size - BPM, Voice & I'M OK) */}
         {/* ============================================================ */}
-        <div className="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6 flex flex-col justify-between">
+        <div className="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xl space-y-5 flex flex-col justify-between">
           
           <div>
             {/* Top Label for Object B */}
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-3">
               <div className="flex items-center gap-2">
                 <Watch className="w-4 h-4 text-emerald-700" />
                 <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 font-mono">
-                  OBJECT B: THE WEARABLE
+                  OBJECT B: සුරක්ෂා SMART WATCH
                 </span>
               </div>
-              <span className="text-[11px] text-slate-500 font-sans">
-                Elder Wristband
+              <span className="text-[11px] text-slate-500 font-sans font-medium">
+                Normal Size • Biometrics & Voice
               </span>
             </div>
 
-            <p className="text-xs text-slate-600 mb-4">
-              Comfortable, waterproof wristband with <strong>zero touchscreens and zero complex menus</strong>. Equipped with haptic vibration motor and an accelerometer.
+            <p className="text-xs text-slate-600 mb-3">
+              Compact, normal-sized elder smartwatch with continuous optical heart rate tracking, voice capture mic, and physical confirmation.
             </p>
 
             {isNewSituation && (
-              <div className="p-3 bg-amber-50 border border-amber-300 rounded-2xl text-[11px] text-amber-950 font-medium mb-3">
-                <strong>Haptic Status:</strong> Soft vibration buzz sent to wrist at 02:18 AM acknowledging agent is waking Arjun next door without alarming Melbourne.
+              <div className="p-2.5 bg-orange-50 border border-orange-300 rounded-2xl text-[11px] text-orange-950 font-medium mb-3 flex items-center justify-between gap-2">
+                <span className="flex items-center gap-1.5 font-bold text-orange-900">
+                  <Heart className="w-3.5 h-3.5 text-rose-600 fill-rose-600 animate-pulse shrink-0" />
+                  02:03 AM Fall: Heart rate spiked to 104 BPM
+                </span>
+                <span className="text-[10px] bg-orange-200 text-orange-900 px-2 py-0.5 rounded-full font-bold shrink-0">
+                  Immobile &gt; 4m
+                </span>
               </div>
             )}
 
-            {/* Visual Representation of the Wristband */}
-            <div className="relative flex flex-col items-center justify-center my-4">
+            {/* Visual Representation of the Normal-Sized Smart Watch */}
+            <div className="relative flex flex-col items-center justify-center my-3 select-none">
               
-              {/* Wristband Top Strap */}
-              <div className="w-20 h-10 bg-slate-700 rounded-t-2xl shadow-inner border-x border-t border-slate-600 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                <div className="flex justify-center gap-1.5 pt-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-900" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-900" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-900" />
+              {/* Watch Top Strap */}
+              <div className="w-20 h-7 bg-slate-800 rounded-t-xl shadow-inner border-x border-t border-slate-700 relative overflow-hidden flex flex-col justify-center items-center">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-1 rounded-full bg-slate-900/80" />
+                  <div className="w-3 h-1 rounded-full bg-slate-900/80" />
+                  <div className="w-3 h-1 rounded-full bg-slate-900/80" />
                 </div>
               </div>
 
-              {/* Wristband Core Chassis */}
-              <div className="w-52 h-52 rounded-3xl bg-gradient-to-b from-slate-800 via-slate-900 to-black p-4 shadow-2xl border-4 border-slate-700 flex flex-col items-center justify-center relative">
+              {/* Watch Outer Chassis - Normal Smartwatch Dimensions (w-44 h-48) */}
+              <div className="w-44 h-48 rounded-[2rem] bg-gradient-to-b from-slate-800 via-slate-900 to-black p-2.5 shadow-2xl border-2 border-slate-700 relative flex flex-col justify-between items-center">
                 
-                {/* Vibration / Haptic Indicator Icon */}
-                <div className="absolute top-2.5 right-3 flex items-center gap-1 text-[10px] text-emerald-400 font-mono">
-                  <Activity className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                  <span>Haptic Engine</span>
-                </div>
+                {/* Physical Side Crown */}
+                <div className="absolute -right-1 top-8 w-1 h-5 bg-slate-600 rounded-r-xs border-r border-slate-500 shadow-xs" title="Digital Crown" />
 
-                {/* BLE Mesh status */}
-                <div className="absolute top-2.5 left-3 flex items-center gap-1 text-[10px] text-slate-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  <span className="text-[9px] font-mono">Mesh</span>
-                </div>
+                {/* OLED Screen (Just BPM, Voice Capturing Icon, and I'M OK Button) */}
+                <div className="w-full h-full rounded-[1.5rem] bg-slate-950 p-2.5 flex flex-col justify-between items-center text-white border border-slate-800/90 shadow-inner relative overflow-hidden">
+                  
+                  {/* Top Bar: Time and Voice Capturing Icon */}
+                  <div className="w-full flex items-center justify-between text-[11px] font-mono text-slate-400">
+                    <span className="font-bold text-slate-300">
+                      {isNewSituation ? '02:14' : (activeState === 'tablet' ? '08:15' : '07:45')}
+                    </span>
+                    {/* Icon that shows it's capturing voice */}
+                    <div className="flex items-center gap-1" title="Capturing Voice">
+                      <Mic className={`w-3.5 h-3.5 ${isWatchListening ? 'text-teal-200 animate-bounce' : 'text-teal-400 animate-pulse'}`} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-ping" />
+                    </div>
+                  </div>
 
-                {/* EXACTLY ONE MASSIVE TACTILE 3D BUTTON */}
-                <div className="flex flex-col items-center">
+                  {/* Center: BPM Display Only */}
+                  <div className="flex flex-col items-center justify-center my-auto">
+                    <Heart className={`w-7 h-7 text-rose-500 fill-rose-500 ${isNewSituation ? 'animate-bounce' : 'animate-pulse'}`} />
+                    <div className="flex items-baseline gap-1 mt-0.5">
+                      <span className="text-3xl font-black font-mono tracking-tight text-white leading-none">
+                        {isNewSituation ? '104' : '74'}
+                      </span>
+                      <span className="text-[10px] font-bold text-rose-400 font-mono">BPM</span>
+                    </div>
+                  </div>
+
+                  {/* Bottom: Button for I'M OK */}
                   <button
                     onClick={handleWearableClick}
-                    className={`w-32 h-32 rounded-full font-black text-white text-base tracking-wider transition-all flex flex-col items-center justify-center gap-1 cursor-pointer select-none ${
+                    className={`w-full py-1.5 rounded-xl font-black text-xs tracking-wider transition-all flex items-center justify-center gap-1 cursor-pointer select-none shadow-md ${
                       wearablePressed
-                        ? 'bg-emerald-600 translate-y-2 shadow-none ring-4 ring-emerald-300'
-                        : 'bg-emerald-500 hover:bg-emerald-450 shadow-[0_10px_0_#065f46] hover:shadow-[0_8px_0_#065f46] hover:translate-y-0.5 active:translate-y-2 active:shadow-none'
+                        ? 'bg-emerald-600 scale-95 ring-2 ring-emerald-300 text-white'
+                        : 'bg-emerald-500 hover:bg-emerald-450 active:scale-95 text-white shadow-emerald-950/40'
                     }`}
                   >
-                    <CheckCircle2 className="w-6 h-6 text-white drop-shadow-sm" />
-                    <span className="text-lg font-black drop-shadow-sm">I AM OK</span>
-                    <span className="text-[9px] font-medium tracking-normal text-emerald-100 opacity-90">
-                      (Tactile Button)
-                    </span>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                    <span>I'M OK</span>
                   </button>
-                </div>
-
-                {/* Subtitle below button */}
-                <div className="absolute bottom-2 text-center">
-                  <span className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">
-                    TACTILE DIGNITY BUTTON
-                  </span>
                 </div>
               </div>
 
-              {/* Wristband Bottom Strap */}
-              <div className="w-20 h-10 bg-slate-700 rounded-b-2xl shadow-inner border-x border-b border-slate-600 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                <div className="flex justify-center gap-1.5 pt-4">
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-900" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-900" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-900" />
+              {/* Watch Bottom Strap */}
+              <div className="w-20 h-7 bg-slate-800 rounded-b-xl shadow-inner border-x border-b border-slate-700 relative overflow-hidden flex flex-col justify-center items-center">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-1 rounded-full bg-slate-900/80" />
+                  <div className="w-3 h-1 rounded-full bg-slate-900/80" />
+                  <div className="w-3 h-1 rounded-full bg-slate-900/80" />
                 </div>
               </div>
             </div>
 
             {/* Click Feedback Message */}
             {wearableFeedback && (
-              <div className="p-3 rounded-2xl bg-amber-50 border border-amber-300 text-xs text-amber-950 animate-fadeIn">
+              <div className="p-2.5 rounded-2xl bg-amber-50 border border-amber-300 text-xs text-amber-950 animate-fadeIn mb-2 text-center font-medium">
                 {wearableFeedback}
               </div>
             )}
+
+            {/* Interactive Wrist Voice Simulator Buttons */}
+            <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-1.5 mt-2">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+                <span className="flex items-center gap-1">
+                  <Mic className="w-3 h-3 text-teal-600" />
+                  Simulate Wrist Voice:
+                </span>
+                <span className="text-[10px] text-slate-500 font-normal">Acoustic Input</span>
+              </div>
+              <div className="grid grid-cols-2 gap-1.5">
+                <button
+                  onClick={() => handleWatchVoiceTrigger('බිව්වා', 'Taken', 'taken')}
+                  className="px-2 py-1.5 rounded-xl bg-white hover:bg-emerald-50 border border-slate-300 hover:border-emerald-400 text-slate-800 hover:text-emerald-900 text-xs font-bold transition-all text-left flex items-center justify-between cursor-pointer"
+                >
+                  <span>🗣️ "බිව්වා"</span>
+                  <span className="text-[10px] text-emerald-700 font-semibold">Taken</span>
+                </button>
+                <button
+                  onClick={() => handleWatchVoiceTrigger('මම හොඳින්', "I'm Fine", 'fine')}
+                  className="px-2 py-1.5 rounded-xl bg-white hover:bg-sky-50 border border-slate-300 hover:border-sky-400 text-slate-800 hover:text-sky-900 text-xs font-bold transition-all text-left flex items-center justify-between cursor-pointer"
+                >
+                  <span>🗣️ "මම හොඳින්"</span>
+                  <span className="text-[10px] text-sky-700 font-semibold">Fine</span>
+                </button>
+                <button
+                  onClick={() => handleWatchVoiceTrigger('අමාරුයි', 'Help', 'help')}
+                  className="px-2 py-1.5 rounded-xl bg-white hover:bg-rose-50 border border-slate-300 hover:border-rose-400 text-slate-800 hover:text-rose-900 text-xs font-bold transition-all text-left flex items-center justify-between cursor-pointer"
+                >
+                  <span>🗣️ "අමාරුයි"</span>
+                  <span className="text-[10px] text-rose-700 font-semibold">Help</span>
+                </button>
+                <button
+                  onClick={() => handleWatchVoiceTrigger('පස්සේ', 'Later', 'later')}
+                  className="px-2 py-1.5 rounded-xl bg-white hover:bg-amber-50 border border-slate-300 hover:border-amber-400 text-slate-800 hover:text-amber-900 text-xs font-bold transition-all text-left flex items-center justify-between cursor-pointer"
+                >
+                  <span>🗣️ "පස්සේ"</span>
+                  <span className="text-[10px] text-amber-700 font-semibold">Later</span>
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* Wearable Specs Callout */}
-          <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-1.5">
-            <div className="font-bold text-slate-800 flex items-center gap-1.5">
+          {/* Smart Watch Specs Callout */}
+          <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-1 mt-2">
+            <div className="font-bold text-slate-800 flex items-center gap-1">
               <Zap className="w-3.5 h-3.5 text-amber-600" />
-              Wearable Hardware Constraints:
+              Smart Watch Hardware Constraints:
             </div>
             <ul className="list-disc list-inside space-y-0.5 text-[11px] text-slate-600">
-              <li><strong>Zero Screens:</strong> Eliminates accidental taps, charging anxiety, and cognitive overload.</li>
-              <li><strong>One Massive Button:</strong> Provides tactile reassurance for falls or false alarms.</li>
-              <li><strong>6-Month Battery:</strong> Coin-cell powered with waterproof IP68 seal for bath safety.</li>
+              <li><strong>Continuous Optical BPM:</strong> Real-time heart rate detection (PPG).</li>
+              <li><strong>Wrist Voice AI:</strong> Captures spoken Sinhala commands locally with zero cloud upload.</li>
+              <li><strong>Elder Form Factor:</strong> Normal-sized smartwatch with zero complex phone apps or menus.</li>
             </ul>
           </div>
         </div>

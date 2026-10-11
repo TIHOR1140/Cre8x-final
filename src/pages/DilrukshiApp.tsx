@@ -242,7 +242,7 @@ export const DilrukshiApp: React.FC<DilrukshiAppProps> = ({
                   </p>
                   <div className="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100/90 text-emerald-800 text-[10px] font-semibold border border-emerald-300">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                    Protected by Mithra Mesh
+                    Protected by සුරක්ෂා Mesh
                   </div>
                 </div>
 
@@ -380,7 +380,7 @@ export const DilrukshiApp: React.FC<DilrukshiAppProps> = ({
 
           <div className="pt-3 border-t border-slate-200 text-center">
             <span className="text-[9px] text-slate-400">
-              Mithra Mobile • End-to-End Encrypted to Melbourne
+              <span className="font-sinhala font-semibold">සුරක්ෂා</span> Mobile • End-to-End Encrypted to Melbourne
             </span>
           </div>
         </div>
