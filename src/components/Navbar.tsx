@@ -34,27 +34,28 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navItems: { id: PageId; label: string; sub: string; icon: React.ReactNode; badge?: string }[] = [
     {
       id: 'malani',
-      label: "Malani's Hub",
-      sub: 'Screenless Ambient (Kandy)',
-      icon: <Radio className="w-4 h-4" />
+      label: "1. In-Home Hardware",
+      sub: 'Hub & Wristband (No Screen/App)',
+      icon: <Radio className="w-4 h-4" />,
+      badge: 'Hardware'
     },
     {
       id: 'dilrukshi',
-      label: "Dilrukshi's App",
-      sub: 'Melbourne Daughter',
+      label: "2. Dilrukshi's Phone",
+      sub: 'Daughter App (Melbourne)',
       icon: <Smartphone className="w-4 h-4" />
     },
     {
       id: 'arjun',
-      label: "Arjun's Screen",
-      sub: 'Neighbour Wake-Up (2 min)',
+      label: "3. Arjun's Phone",
+      sub: 'Neighbour Alert (2 min)',
       icon: <BellRing className="w-4 h-4" />,
       badge: 'Critical'
     },
     {
       id: 'doctor',
-      label: "Dr. Ishan's Digest",
-      sub: 'Clinical Triage Report',
+      label: "4. Doctor's Phone",
+      sub: 'Dr. Ishan Clinical App',
       icon: <Stethoscope className="w-4 h-4" />
     }
   ];

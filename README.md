@@ -22,26 +22,28 @@ Mithra is a multi-view interactive React prototype that translates real geriatri
 
 ---
 
-## 📱 Prototype Navigation
+## 📱 System Architecture: In-Home Hardware vs. Mobile Phone Containers
 
-The prototype provides 4 standalone views accessible via the top navigation bar:
+The ecosystem explicitly differentiates between elder in-home hardware (no screens, no mobile app) and the support network's smartphone apps:
 
-1. **Malani's Ambient Hub Simulator**:
-   - Physical hub device simulation with dynamic radial light glows.
-   - Interactive state switchers: *Normal Evening*, *Tablet Reminder*, *Night Pathway*, *Bathroom Check*.
-   - Sinhala voice TTS simulator with English subtitles and verbal response testing (*"Taken"*, *"Ignore"*, *"Later"*, *"Help"*).
-   - Anti-surveillance telemetry panel (PIR active, 16 resp/min micro-radar, zero cameras).
-2. **Dilrukshi's Companion App (Melbourne)**:
+1. **Tab 1: In-Home Hardware Simulator (Malani • Peradeniya)**:
+   - **Zero touchscreens, zero mobile apps.** Malani interacts solely through physical objects in her home:
+   - **Object A (The Home Hub)**: Circular tabletop ambient device with 360° diffuse radial light glow (Amber for reminders, Blue/White for night pathway, Crimson for emergency) and an interactive **Transcript Box** displaying spoken Sinhala (*"මලනී අම්මා, සවස බෙහෙත් පෙත්ත ගන්න අමතක වුණාද?"*) with English translation and audio replay.
+   - **Object B (The Wearable)**: Tactile elder wristband with **exactly ONE massive, tactile 3D button** that says *"I AM OK"*, haptic vibration engine, and zero display screen.
+2. **Tab 2: Dilrukshi's Mobile Phone App (Melbourne)**:
+   - Standard smartphone frame container (`max-w-sm mx-auto border-[8px] border-slate-800 rounded-[2.5rem]`).
    - Switchable between **State A (Normal Safe Status)** and **State B (Night Critical Emergency)**.
-   - Incident timeline tracker (02:14 AM stillness detected → 02:17 AM spoken check unanswered → 02:18 AM neighbour alerted).
-   - Simulated international call dialer to Arjun and Kandy 1990 Suwa Seriya ambulance.
-3. **Arjun's Emergency Screen (Neighbour)**:
-   - Bedside wake-up display with Web Audio API alarm siren.
-   - Massive buttons for groggy awakening: *"I AM ON MY WAY"* and *"CANNOT RESPOND"*.
-   - Veranda gate keycode display (`8492`) and built-in screen torch.
-4. **Dr. Ishan Fernando's Clinical Digest (Kandy Health Centre)**:
-   - Tabular metrics: Medication Adherence, Mobility & Fall Risk (micro-radar gait velocity), and Alert Fatigue Filter (14 minor anomalies contained locally; 0 unnecessary family wake-ups).
-   - Doctor's Action Tray: Export Clinical PDF and schedule routine follow-up call.
+   - Incident timeline tracker and simulated international audio dialer.
+3. **Tab 3: Arjun's Bedside Mobile Phone App (Neighbour • 2 min walk)**:
+   - High-contrast bedside mobile container with piercing wake-up alarm siren.
+   - Two massive touch targets for groggy interaction in the dark (*"I AM ON MY WAY"* & *"Cannot Respond"*).
+   - Veranda gate keycode display (`PIN: 8492`) and built-in screen torch.
+4. **Tab 4: Dr. Ishan Fernando's Mobile Clinical App (Kandy Health Centre)**:
+   - Clinical triage mobile container reviewing weekly trends:
+   - Medication adherence (100% morning / 4 missed evening pills).
+   - Micro-radar fall risk (2 nocturnal stumbles, zero trauma).
+   - Alert fatigue filter (14 anomalies contained locally; 0 unnecessary family wake-ups).
+   - Doctor's Action Tray (Export PDF, schedule follow-up call, adjust reminder slot).
 
 ---
 
