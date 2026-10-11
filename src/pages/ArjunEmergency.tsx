@@ -10,11 +10,8 @@ import {
   ShieldAlert, 
   XCircle, 
   Flashlight,
-  ChevronRight,
   ChevronsRight,
-  Sliders,
-  CheckCircle2,
-  Info
+  CheckCircle2
 } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { MobileFrame } from '../components/MobileFrame';
@@ -72,15 +69,6 @@ const SlideButton: React.FC<SlideButtonProps> = ({
       // Snap back if released early
       setDragProgress(0);
     }
-  };
-
-  // Quick auto-slide button for rapid testing
-  const handleAutoSlide = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setDragProgress(100);
-    setTimeout(() => {
-      onConfirm();
-    }, 150);
   };
 
   useEffect(() => {
@@ -171,16 +159,6 @@ const SlideButton: React.FC<SlideButtonProps> = ({
             icon
           )}
         </div>
-
-        {/* Quick Click Fallback Button on far right for desktop testing */}
-        <button
-          onClick={handleAutoSlide}
-          title="Click to trigger slide"
-          className="absolute right-2 top-2 bottom-2 px-2.5 rounded-lg bg-black/10 hover:bg-black/20 text-[10px] font-bold text-slate-700 z-20 flex items-center gap-1 transition-all"
-        >
-          <span>Slide</span>
-          <ChevronRight className="w-3.5 h-3.5" />
-        </button>
       </div>
 
       {sublabel && (
@@ -326,13 +304,6 @@ export const ArjunEmergency: React.FC<ArjunEmergencyProps> = ({
               </div>
             </div>
 
-            {/* Accidental Touch Prevention Geriatric Note */}
-            <div className="bg-amber-50/90 border border-amber-200 rounded-xl p-2.5 flex items-start gap-2 shadow-2xs">
-              <Sliders className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
-              <div className="text-[10px] text-amber-950 leading-tight">
-                <strong>Geriatric Touch Protection:</strong> Replaced tap buttons with <strong>Slider Buttons</strong>. Requires a deliberate swipe gesture so groggy responders waking in the dark won't accidentally dismiss critical alerts.
-              </div>
-            </div>
 
             {/* IDLE STATE: SLIDER BUTTONS INSTEAD OF TAP BUTTONS */}
             {responderStatus === 'idle' && (
