@@ -13,7 +13,9 @@ import {
   HeartHandshake,
   ShieldCheck,
   Clock,
-  Sparkles
+  Sparkles,
+  Heart,
+  Activity
 } from 'lucide-react';
 import { sound } from '../utils/audio';
 import { MobileFrame } from '../components/MobileFrame';
@@ -41,7 +43,7 @@ export const DrDigest: React.FC<DrDigestProps> = ({ isNewSituation = false }) =>
         <div className="flex items-center gap-2">
           <Stethoscope className="w-4 h-4 text-blue-600" />
           <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
-            {isNewSituation ? "Dr. Ishan Fernando: Morning-After Triage" : "Dr. Ishan's Clinical Mobile Portal"}
+            {isNewSituation ? "Dr. Ishan Fernando: Live Vitals & Morning Triage" : "Dr. Ishan's Clinical Mobile Portal"}
           </span>
         </div>
         <span className="text-[11px] font-semibold text-slate-500">
@@ -60,44 +62,6 @@ export const DrDigest: React.FC<DrDigestProps> = ({ isNewSituation = false }) =>
           
           <div className="space-y-3.5">
             
-            {/* 5. NEW HIGHLIGHTED CARD: TRUST REPAIR LOG (8:00 AM) */}
-            {isNewSituation && (
-              <div className="bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 text-white rounded-2xl p-4 border-2 border-indigo-400 shadow-lg animate-scaleUp space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="p-1.5 bg-indigo-500 text-white rounded-lg shadow-xs">
-                      <HeartHandshake className="w-4 h-4" />
-                    </div>
-                    {/* Title */}
-                    <h3 className="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-tight">
-                      Trust Repair Log (8:00 AM)
-                    </h3>
-                  </div>
-                  <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-indigo-800 text-indigo-200 border border-indigo-700">
-                    SLMC Protocol
-                  </span>
-                </div>
-
-                {/* Log Content Requested */}
-                <div className="bg-black/50 p-3 rounded-xl border border-indigo-700/60 text-xs text-slate-200 leading-relaxed font-sans">
-                  <span className="font-bold text-amber-200 block mb-1">
-                    Agent explained the override to Malani:
-                  </span>
-                  <p className="italic text-slate-100 font-serif text-[13px] leading-relaxed">
-                    "Amma, I kept my promise and did not sound alarms for Dilrukshi last night. However, my core rule is that if you are on the floor for over 4 minutes, I must get local help for your safety."
-                  </p>
-                </div>
-
-                <div className="flex items-center justify-between text-[10px] text-slate-300 pt-1">
-                  <span className="flex items-center gap-1 text-emerald-400 font-semibold">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    Elder Trust Preserved: Zero Resentment
-                  </span>
-                  <span className="font-mono text-slate-400">Dr. Ishan Signed</span>
-                </div>
-              </div>
-            )}
-
             {/* Patient Header Card */}
             <div className="bg-slate-900 text-white p-3.5 rounded-2xl border border-slate-800 shadow-xs">
               <div className="flex items-center justify-between">
@@ -107,11 +71,112 @@ export const DrDigest: React.FC<DrDigestProps> = ({ isNewSituation = false }) =>
                   <div className="text-[10px] text-slate-300">Age: 87 • Peradeniya, Kandy</div>
                 </div>
                 <div className="text-right">
-                  <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                  <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                    isNewSituation 
+                      ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-pulse' 
+                      : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                  }`}>
                     {isNewSituation ? "Post-Slip Monitored" : "Stable"}
                   </span>
                   <div className="text-[9px] text-slate-400 mt-1">Review: Oct 11, 2026</div>
                 </div>
+              </div>
+            </div>
+
+            {/* LIVE VITALS & HEART RATE (From Malani's Smart Watch) */}
+            <div className={`rounded-2xl p-3.5 border shadow-2xs space-y-2.5 transition-all ${
+              isNewSituation ? 'bg-rose-50/40 border-rose-200' : 'bg-white border-slate-200'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
+                  <Heart className={`w-4 h-4 text-rose-600 fill-rose-600 ${isNewSituation ? 'animate-bounce' : 'animate-pulse'}`} />
+                  <span>Live Smartwatch Vitals</span>
+                </div>
+                <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                  isNewSituation 
+                    ? 'bg-rose-100 text-rose-900 border border-rose-300 animate-pulse' 
+                    : 'bg-emerald-100 text-emerald-900 border border-emerald-200'
+                }`}>
+                  {isNewSituation ? '⚠️ Tachycardia / Fall Alert' : 'Continuous PPG Live'}
+                </span>
+              </div>
+
+              {/* Primary BPM and Status readout */}
+              <div className={`p-3 rounded-xl border flex items-center justify-between ${
+                isNewSituation 
+                  ? 'bg-gradient-to-r from-rose-50 to-orange-50 border-rose-200' 
+                  : 'bg-gradient-to-r from-slate-50 to-emerald-50/50 border-slate-200'
+              }`}>
+                <div>
+                  <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">
+                    Heart Rate (BPM)
+                  </div>
+                  <div className="flex items-baseline gap-1.5 mt-0.5">
+                    <span className={`text-3xl font-black font-mono tracking-tight ${
+                      isNewSituation ? 'text-rose-600' : 'text-slate-900'
+                    }`}>
+                      {isNewSituation ? '104' : '74'}
+                    </span>
+                    <span className="text-xs font-bold text-slate-500">BPM</span>
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ml-1 ${
+                      isNewSituation ? 'bg-rose-200 text-rose-900' : 'bg-emerald-100 text-emerald-800'
+                    }`}>
+                      {isNewSituation ? 'Elevated Spike' : 'Normal Sinus Rhythm'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Mini ECG trace visual */}
+                <div className="w-24 text-right">
+                  <svg className={`w-full h-6 ${isNewSituation ? 'text-rose-500' : 'text-emerald-500'}`} viewBox="0 0 100 20" fill="none">
+                    <path
+                      d="M0 10 L25 10 L30 4 L35 18 L40 2 L45 14 L50 10 L100 10"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <span className="text-[9px] text-slate-400 font-mono">
+                    {isNewSituation ? '02:03 AM Peak' : 'Resting Baseline'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Vital Status Indicators Grid */}
+              <div className="grid grid-cols-3 gap-1.5 text-center text-[10px]">
+                <div className="p-2 bg-slate-50 rounded-xl border border-slate-200">
+                  <div className="text-slate-400 text-[9px] font-semibold">SpO2 Level</div>
+                  <div className={`font-mono font-bold mt-0.5 ${isNewSituation ? 'text-amber-600' : 'text-emerald-600'}`}>
+                    {isNewSituation ? '96%' : '98%'}
+                  </div>
+                  <div className="text-[8px] text-slate-400">{isNewSituation ? 'Mild Drop' : 'Optimal'}</div>
+                </div>
+
+                <div className="p-2 bg-slate-50 rounded-xl border border-slate-200">
+                  <div className="text-slate-400 text-[9px] font-semibold">Skin Temp</div>
+                  <div className="font-mono font-bold text-slate-800 mt-0.5">36.5°C</div>
+                  <div className="text-[8px] text-slate-400">Normothermic</div>
+                </div>
+
+                <div className="p-2 bg-slate-50 rounded-xl border border-slate-200">
+                  <div className="text-slate-400 text-[9px] font-semibold">Vital Trend</div>
+                  <div className={`font-bold mt-0.5 ${isNewSituation ? 'text-rose-600' : 'text-emerald-600'}`}>
+                    {isNewSituation ? 'Anomalous' : 'Stable'}
+                  </div>
+                  <div className="text-[8px] text-slate-400">{isNewSituation ? 'Post-Fall' : 'Normal'}</div>
+                </div>
+              </div>
+
+              {/* Last Sync Timestamp */}
+              <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1 border-t border-slate-100">
+                <span className="flex items-center gap-1 font-mono">
+                  <Clock className="w-3 h-3 text-slate-400" />
+                  {isNewSituation ? 'Last Reading: 02:14 AM (Smartwatch Mesh)' : 'Last Reading: Real-time (2 mins ago)'}
+                </span>
+                <span className="text-[9px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">
+                  PPG Active
+                </span>
               </div>
             </div>
 

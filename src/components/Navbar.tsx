@@ -57,9 +57,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     {
       id: 'doctor',
       label: "4. Doctor's Phone",
-      sub: isNewSituation ? 'Trust Repair Log (8 AM)' : 'Dr. Ishan Clinical App',
+      sub: isNewSituation ? 'Live Vitals (104 BPM)' : 'Dr. Ishan Clinical App',
       icon: <Stethoscope className="w-4 h-4" />,
-      badge: isNewSituation ? 'Trust Log' : undefined
+      badge: isNewSituation ? 'Live Vitals' : undefined
     }
   ];
 
